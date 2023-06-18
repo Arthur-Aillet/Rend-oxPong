@@ -15,7 +15,7 @@ pub fn snake_update<Snake>(_: &rend_ox::nannou::App, _: &mut App<Snake>, _: rend
 }
 
 fn snake_app(nannou_app: &rend_ox::nannou::App) -> App<Snake> {
-    app(nannou_app, Snake::new(), snake_update)
+    app(nannou_app, Snake::new()).update(snake_update)
 }
 
 fn main() {
