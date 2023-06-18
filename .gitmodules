@@ -1,0 +1,3 @@
+[submodule "src/rend_ox"]
+	path = src/rend_ox
+	url = git@github.com:Iddeko/Rend-ox.git
