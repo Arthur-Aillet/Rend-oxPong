@@ -5,7 +5,7 @@ use rend_ox::nannou::event::Key;
 use rend_ox::nannou_egui::egui::CtxRef;
 use rend_ox::Vec3;
 
-pub struct Snake {
+pub struct Pong {
     pub ball: Option<MeshDescriptor>,
     pub rack: Option<MeshDescriptor>,
     pub fst_height: f32,
@@ -15,9 +15,9 @@ pub struct Snake {
     pub ball_pos: Vec3,
 }
 
-impl Snake {
-    fn new() -> Snake {
-        Snake {
+impl Pong {
+    fn new() -> Pong {
+        Pong {
             ball: None,
             rack: None,
             fst_height: 0.0,
@@ -39,8 +39,7 @@ fn bound_val(val: f32, min: f32, max: f32) -> f32 {
     val
 }
 
-pub fn pong_update(nannou: &rend_ox::nannou::App, app: &mut App<Snake>, update: rend_ox::nannou::event::Update, _: CtxRef) {
-    rend_ox::camera_controller::default_camera(nannou, app, &update);
+pub fn pong_update(nannou: &rend_ox::nannou::App, app: &mut App<Pong>, update: rend_ox::nannou::event::Update, _: &CtxRef) {
     app.user.speed += app.user.speed * 0.0001 * nannou.duration.since_prev_update.as_millis() as f64;
     if nannou.keys.down.contains(&Key::T) {
         app.user.fst_height += 0.025 * nannou.duration.since_prev_update.as_millis() as f32;
@@ -88,22 +87,18 @@ pub fn pong_update(nannou: &rend_ox::nannou::App, app: &mut App<Snake>, update: 
     }
 }
 
-fn pong_app(nannou_app: &rend_ox::nannou::App) -> App<Snake> {
-    let mut app = app(nannou_app, Snake::new()).update(pong_update);
+fn pong_app(nannou_app: &rend_ox::nannou::App) -> App<Pong> {
+    let mut app = app(nannou_app, Pong::new()).update(pong_update);
 
-    if let Ok(mut graphics) = app.graphics.try_borrow_mut() {
-        if let Ok(md) = graphics.load_mesh("./ball.obj") {
-            app.user.ball = Some(md);
-        } else {
-            println!("Error loading ball!")
-        }
-        if let Ok(md) = graphics.load_mesh("./rack.obj") {
-            app.user.rack = Some(md);
-        } else {
-            println!("Error loading rack!")
-        }
+    if let Ok(md) = app.load_mesh("./ball.obj") {
+        app.user.ball = Some(md);
     } else {
-        println!("Error!")
+        println!("Error loading ball!")
+    }
+    if let Ok(md) = app.load_mesh("./rack.obj") {
+        app.user.rack = Some(md);
+    } else {
+        println!("Error loading rack!")
     }
     app
 }
