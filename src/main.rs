@@ -23,7 +23,7 @@ impl Snake {
             fst_height: 0.0,
             snd_height: 0.0,
             speed: 0.1,
-            angle: PI,
+            angle: 0.,
             ball_pos: Vec3::new(0.0, -30.0, 0.0),
         }
     }
@@ -72,7 +72,7 @@ pub fn pong_update(nannou: &rend_ox::nannou::App, app: &mut App<Snake>, update: 
     }
 
     if app.user.ball_pos.x < -26. {
-        app.user.angle = app.user.angle - PI + (((app.user.snd_height - app.user.ball_pos.z)/8.0) as f64 * PI/4.0) as f64;
+        app.user.angle = app.user.angle - PI - (((app.user.snd_height - app.user.ball_pos.z)/8.0) as f64 * PI/4.0) as f64;
     }
 
     if app.user.ball_pos.z > 13. || app.user.ball_pos.z < -13. {
